@@ -1,0 +1,205 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-cyan: var(--cyan);
+  --color-cyan-dim: var(--cyan-dim);
+  --color-magenta: var(--magenta);
+  --color-magenta-dim: var(--magenta-dim);
+  --color-success: var(--success);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --radius: 0.85rem;
+
+  /* Modern SaaS palette — inspired by ChatGPT / Cursor / Linear */
+  --background: oklch(0.16 0.005 270);          /* near-black, neutral */
+  --foreground: oklch(0.96 0.005 270);
+  --card: oklch(0.19 0.006 270);
+  --card-foreground: oklch(0.96 0.005 270);
+  --popover: oklch(0.20 0.007 270);
+  --popover-foreground: oklch(0.96 0.005 270);
+
+  --primary: oklch(0.78 0.14 245);              /* soft cool blue accent */
+  --primary-foreground: oklch(0.14 0.005 270);
+  --secondary: oklch(0.23 0.007 270);
+  --secondary-foreground: oklch(0.96 0.005 270);
+  --muted: oklch(0.22 0.006 270);
+  --muted-foreground: oklch(0.65 0.012 270);
+  --accent: oklch(0.26 0.01 270);
+  --accent-foreground: oklch(0.96 0.005 270);
+
+  --destructive: oklch(0.66 0.22 22);
+  --destructive-foreground: oklch(0.98 0 0);
+
+  --border: oklch(0.96 0.005 270 / 8%);
+  --input: oklch(0.96 0.005 270 / 12%);
+  --ring: oklch(0.78 0.14 245 / 50%);
+
+  /* Legacy alias tokens — remapped to the modern palette so existing
+     "text-cyan"/"text-magenta" usages still look polished and modern. */
+  --cyan: oklch(0.94 0.02 230);                 /* near-white, gentle cool */
+  --cyan-dim: oklch(0.62 0.04 240);
+  --magenta: oklch(0.78 0.13 35);               /* warm amber-rose accent */
+  --magenta-dim: oklch(0.58 0.10 35);
+  --success: oklch(0.76 0.14 155);
+
+  --shadow-cyan: 0 1px 2px oklch(0 0 0 / 0.3),
+                 0 8px 24px -8px oklch(0 0 0 / 0.4);
+  --shadow-magenta: 0 1px 2px oklch(0 0 0 / 0.3),
+                    0 12px 32px -10px oklch(0.78 0.13 35 / 0.35);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html, body, #root { height: 100%; }
+  html, body { overflow-x: hidden; }
+  body {
+    background:
+      radial-gradient(1100px 600px at 80% -10%, oklch(0.78 0.14 245 / 0.10), transparent 55%),
+      radial-gradient(800px 500px at -10% 100%, oklch(0.78 0.13 35 / 0.06), transparent 60%),
+      var(--color-background);
+    background-attachment: fixed;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: -0.005em;
+  }
+  /* Honor iOS safe area on full-bleed shells */
+  .safe-pt { padding-top: env(safe-area-inset-top); }
+  .safe-pb { padding-bottom: env(safe-area-inset-bottom); }
+  /* Touch targets */
+  @media (pointer: coarse) {
+    button, a, [role="button"], input[type="checkbox"], input[type="radio"] {
+      touch-action: manipulation;
+    }
+  }
+  /* Prevent iOS zoom on focus */
+  @media (max-width: 640px) {
+    input, select, textarea { font-size: 16px; }
+  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.96 0.005 270 / 0.08);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: oklch(0.96 0.005 270 / 0.16); background-clip: padding-box; border: 2px solid transparent; }
+}
+
+/* === Modern utilities (legacy names preserved) === */
+
+@utility text-cyan {
+  color: var(--color-foreground);
+}
+@utility text-magenta {
+  color: var(--color-magenta);
+}
+@utility border-cyan {
+  border-color: oklch(0.96 0.005 270 / 0.18);
+}
+@utility bg-cyan-glow {
+  background: oklch(0.96 0.005 270 / 0.06);
+}
+@utility shadow-cyan-glow {
+  box-shadow: var(--shadow-cyan);
+}
+@utility shadow-magenta-glow {
+  box-shadow: var(--shadow-magenta);
+}
+/* Glow text → flat, modern — no neon */
+@utility text-shadow-cyan {
+  text-shadow: none;
+}
+@utility text-shadow-magenta {
+  text-shadow: none;
+}
+
+/* HUD panel → clean rounded card, no corner brackets */
+@utility hud-panel {
+  position: relative;
+  border: 1px solid oklch(0.96 0.005 270 / 0.10);
+  background: oklch(0.20 0.007 270 / 0.65);
+  border-radius: 0.85rem;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.hud-corner-tl, .hud-corner-tr, .hud-corner-bl, .hud-corner-br { display: none; }
+
+@utility hud-label {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--color-muted-foreground);
+  font-weight: 500;
+}
+
+/* Animations */
+@keyframes radar-pulse {
+  0%   { transform: scale(0.6); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.radar-ring { animation: radar-pulse 3s ease-out infinite; }
+.radar-ring-2 { animation-delay: 1s; }
+.radar-ring-3 { animation-delay: 2s; }
+
+@keyframes radar-spin { to { transform: rotate(360deg); } }
+.radar-spin { animation: radar-spin 8s linear infinite; }
+
+@keyframes dot-blink {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+.dot-blink { animation: dot-blink 1.6s ease-in-out infinite; }
+
+/* Scanline removed — visually empty so the legacy element disappears */
+.scanline { display: none; }
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.4; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1); }
+}
+.typing-dot { animation: pulse-dot 1.2s ease-in-out infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fade-in 0.25s ease-out both; }
